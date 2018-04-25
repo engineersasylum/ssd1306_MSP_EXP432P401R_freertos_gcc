@@ -6,6 +6,7 @@
 
 /* Driver header files */
 #include <ti/drivers/GPIO.h>
+#include <ti/drivers/I2C.h>
 
 /* Example/Board Header files */
 #include "Board.h"
@@ -25,6 +26,7 @@ int main(void)
     xTaskCreate((TaskFunction_t)vTaskLEDA, "LEDA", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
     xTaskCreate((TaskFunction_t)vTaskOled, "Oled", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
     GPIO_init();
+
     vTaskStartScheduler();
 
     return (0);

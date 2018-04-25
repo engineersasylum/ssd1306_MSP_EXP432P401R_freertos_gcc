@@ -15,4 +15,5 @@
 	<templateProperties value="id=portableNative_MSP_EXP432P401R_freertos_gcc.projectspec.portableNative_MSP_EXP432P401R_freertos_gcc,buildProfile=release,isHybrid=true,"/>
 	<origin value="/home/blackfly/ti/simplelink_msp432p4_sdk_2_10_00_14/examples/rtos/MSP_EXP432P401R/demos/portableNative/freertos/gcc/portableNative_MSP_EXP432P401R_freertos_gcc.projectspec"/>
 	<filesToOpen value=""/>
+	<isTargetManual value="false"/>
 </projectOptions>

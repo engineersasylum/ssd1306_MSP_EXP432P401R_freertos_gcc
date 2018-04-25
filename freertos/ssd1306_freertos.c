@@ -14,83 +14,17 @@
 
 /* Example/Board Header files */
 #include "Board.h"
-
-#define SSD1306_LCDWIDTH                128
-#define SSD1306_LCDHEIGHT               64
-#define SSD1306_SETCONTRAST             0x81
-#define SSD1306_DISPLAYALLON_RESUME     0xA4
-#define SSD1306_DISPLAYALLON            0xA5
-#define SSD1306_NORMALDISPLAY           0xA6
-#define SSD1306_INVERTDISPLAY           0xA7
-#define SSD1306_DISPLAYOFF              0xAE
-#define SSD1306_DISPLAYON               0xAF
-#define SSD1306_SETDISPLAYOFFSET        0xD3
-#define SSD1306_SETCOMPINS              0xDA
-#define SSD1306_SETVCOMDETECT           0xDB
-#define SSD1306_SETDISPLAYCLOCKDIV      0xD5
-#define SSD1306_SETPRECHARGE            0xD9
-#define SSD1306_SETMULTIPLEX            0xA8
-#define SSD1306_SETLOWCOLUMN            0x00
-#define SSD1306_SETHIGHCOLUMN           0x10
-#define SSD1306_SETSTARTLINE            0x40
-#define SSD1306_MEMORYMODE              0x20
-#define SSD1306_COLUMNADDR              0x21
-#define SSD1306_PAGEADDR                0x22
-#define SSD1306_COMSCANINC              0xC0
-#define SSD1306_COMSCANDEC              0xC8
-#define SSD1306_SEGREMAP                0xA0
-#define SSD1306_CHARGEPUMP              0x8D
-#define SSD1306_EXTERNALVCC             0x1
-#define SSD1306_SWITCHCAPVCC            0x2
-
+#include "Oled/ssd1306.h"
 
 void vTaskOled(void *l)
 {
-    I2C_Handle      i2c;
-    I2C_Params      i2cParams;
-    I2C_Transaction i2cTransaction;
-
-
-    GPIO_init();
     //GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P6,GPIO_PIN5);
     //GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P6,GPIO_PIN4);
+
     I2C_init();
     I2C_Params_init(&i2cParams);
-
     i2cParams.bitRate = I2C_100kHz;
     i2c = I2C_open(Board_I2C_TMP, &i2cParams);
-
-    void ssd_dat(uint8_t data){
-
-            uint8_t txBuffer[2];
-            txBuffer[0] = 0x40;
-            txBuffer[1] = data;
-
-            i2cTransaction.slaveAddress = 0x3c;
-            i2cTransaction.writeBuf   = txBuffer;
-            i2cTransaction.writeCount = 2;
-            i2cTransaction.readBuf    = NULL;
-            i2cTransaction.readCount  = 0;
-            I2C_transfer(i2c, &i2cTransaction);
-            //I2C_close(i2c);
-
-        }
-
-    void ssd_cmd(uint8_t cmd){
-
-        uint8_t txBuffer[2];
-        txBuffer[0] = 0x00;
-        txBuffer[1] = cmd;
-
-        i2cTransaction.slaveAddress = 0x3c;
-        i2cTransaction.writeBuf   = txBuffer;
-        i2cTransaction.writeCount = 2;
-        i2cTransaction.readBuf    = NULL;
-        i2cTransaction.readCount  = 0;
-        I2C_transfer(i2c, &i2cTransaction);
-        //I2C_close(i2c);
-
-    }
 
 
     ssd_cmd(SSD1306_DISPLAYOFF);                    // 0xAE
@@ -120,11 +54,10 @@ void vTaskOled(void *l)
     ssd_cmd(SSD1306_DISPLAYON);                     //display panel on
 
 
-
     for(;;){
 
         uint8_t i=0xb0,j=0;
-        uint8_t time = 2;
+        uint8_t time = 1;
 
             while(i <= 0xb7){
 
@@ -143,6 +76,8 @@ void vTaskOled(void *l)
              sleep(time);
              GPIO_toggle(Board_GPIO_LED0);
     }
+
+    I2C_close(i2c);
  }
 
 
@@ -150,7 +85,7 @@ void vTaskLEDA(void *p)
 {
         uint32_t time = 1;
 
-        GPIO_init();
+        //GPIO_init();
         for(;;) {
 
             sleep(time);

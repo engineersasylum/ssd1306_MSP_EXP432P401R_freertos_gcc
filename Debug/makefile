@@ -10,6 +10,7 @@ GEN_CMDS__FLAG :=
 ORDERED_OBJS += \
 "./MSP_EXP432P401R.o" \
 "./main_freertos.o" \
+"./Oled/ssd1306.o" \
 "./freertos/ssd1306_freertos.o" \
 -Wl,-T"../MSP_EXP432P401R_FREERTOS.lds" \
 $(GEN_CMDS__FLAG) \
@@ -33,8 +34,10 @@ RMDIR := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include Oled/subdir_vars.mk
 -include freertos/subdir_vars.mk
 -include subdir_rules.mk
+-include Oled/subdir_rules.mk
 -include freertos/subdir_rules.mk
 -include objects.mk
 
@@ -169,8 +172,8 @@ ssd1306_MSP_EXP432P401R_freertos_gcc.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "MSP_EXP432P401R.o" "main_freertos.o" "freertos/ssd1306_freertos.o" 
-	-$(RM) "MSP_EXP432P401R.d" "main_freertos.d" "freertos/ssd1306_freertos.d" 
+	-$(RM) "MSP_EXP432P401R.o" "main_freertos.o" "Oled/ssd1306.o" "freertos/ssd1306_freertos.o" 
+	-$(RM) "MSP_EXP432P401R.d" "main_freertos.d" "Oled/ssd1306.d" "freertos/ssd1306_freertos.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
